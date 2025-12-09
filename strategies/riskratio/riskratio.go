@@ -42,8 +42,11 @@ func (s *RiskRatioStrategy) ValidateParams(params strategy.StrategyParams) error
 
 // CalculatePosition calculates position size, leverage, and TP/SL
 func (s *RiskRatioStrategy) CalculatePosition(ctx context.Context, params strategy.PositionParams) (*strategy.PositionPlan, error) {
+	// Convert strategy.Side to calculator.Side
+	calcSide := calculatorSideFromStrategy(params.Side)
+
 	// Validate inputs
-	if err := s.calculator.ValidateInputs(params.Side, params.EntryPrice, params.StopLoss, params.RiskPercent, params.AccountBalance); err != nil {
+	if err := s.calculator.ValidateInputs(calcSide, params.EntryPrice, params.StopLoss, params.RiskPercent, params.AccountBalance); err != nil {
 		return nil, fmt.Errorf("validation failed: %w", err)
 	}
 
@@ -54,7 +57,7 @@ func (s *RiskRatioStrategy) CalculatePosition(ctx context.Context, params strate
 		params.RiskPercent,
 		params.EntryPrice,
 		params.StopLoss,
-		params.Side,
+		calcSide,
 	)
 
 	// 2. Calculate required leverage
@@ -72,7 +75,7 @@ func (s *RiskRatioStrategy) CalculatePosition(ctx context.Context, params strate
 		params.EntryPrice,
 		params.StopLoss,
 		s.rrRatio,
-		params.Side,
+		calcSide,
 	)
 
 	// Build position plan
@@ -117,4 +120,12 @@ func (s *RiskRatioStrategy) OnPriceUpdate(ctx context.Context, position *strateg
 func (s *RiskRatioStrategy) ShouldClose(ctx context.Context, position *strategy.Position, currentPrice float64) (bool, string) {
 	// Let TP/SL orders handle closing
 	return false, ""
+}
+
+// calculatorSideFromStrategy converts strategy.Side to calculator.Side
+func calculatorSideFromStrategy(side strategy.Side) calculator.Side {
+	if side == strategy.SideLong {
+		return calculator.SideLong
+	}
+	return calculator.SideShort
 }
