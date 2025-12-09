@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/agatticelli/calculator-go"
 	"github.com/agatticelli/strategy-go"
-	"github.com/agatticelli/strategy-go/calculator"
 	"github.com/agatticelli/trading-go/broker"
 )
 
