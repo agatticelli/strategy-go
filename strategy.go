@@ -2,8 +2,6 @@ package strategy
 
 import (
 	"context"
-
-	"github.com/agatticelli/trading-go/broker"
 )
 
 // Strategy defines the interface all trading strategies must implement
@@ -21,13 +19,13 @@ type Strategy interface {
 	CalculatePosition(ctx context.Context, params PositionParams) (*PositionPlan, error)
 
 	// OnPositionOpened callback after position is opened
-	OnPositionOpened(ctx context.Context, position *broker.Position) error
+	OnPositionOpened(ctx context.Context, position *Position) error
 
 	// OnPriceUpdate callback for price updates (for trailing, etc.)
-	OnPriceUpdate(ctx context.Context, position *broker.Position, currentPrice float64) (*StrategyAction, error)
+	OnPriceUpdate(ctx context.Context, position *Position, currentPrice float64) (*StrategyAction, error)
 
 	// ShouldClose determines if position should be closed
-	ShouldClose(ctx context.Context, position *broker.Position, currentPrice float64) (bool, string)
+	ShouldClose(ctx context.Context, position *Position, currentPrice float64) (bool, string)
 }
 
 // StrategyParams contains strategy-specific parameters

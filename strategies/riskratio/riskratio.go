@@ -7,7 +7,6 @@ import (
 
 	"github.com/agatticelli/calculator-go"
 	"github.com/agatticelli/strategy-go"
-	"github.com/agatticelli/trading-go/broker"
 )
 
 // RiskRatioStrategy implements fixed risk-reward ratio strategy
@@ -103,19 +102,19 @@ func (s *RiskRatioStrategy) CalculatePosition(ctx context.Context, params strate
 }
 
 // OnPositionOpened callback after position is opened
-func (s *RiskRatioStrategy) OnPositionOpened(ctx context.Context, position *broker.Position) error {
+func (s *RiskRatioStrategy) OnPositionOpened(ctx context.Context, position *strategy.Position) error {
 	// No additional actions after opening for simple RR strategy
 	return nil
 }
 
 // OnPriceUpdate callback for price updates
-func (s *RiskRatioStrategy) OnPriceUpdate(ctx context.Context, position *broker.Position, currentPrice float64) (*strategy.StrategyAction, error) {
+func (s *RiskRatioStrategy) OnPriceUpdate(ctx context.Context, position *strategy.Position, currentPrice float64) (*strategy.StrategyAction, error) {
 	// No dynamic adjustments in simple RR strategy
 	return &strategy.StrategyAction{Type: strategy.ActionTypeNone}, nil
 }
 
 // ShouldClose determines if position should be closed
-func (s *RiskRatioStrategy) ShouldClose(ctx context.Context, position *broker.Position, currentPrice float64) (bool, string) {
+func (s *RiskRatioStrategy) ShouldClose(ctx context.Context, position *strategy.Position, currentPrice float64) (bool, string) {
 	// Let TP/SL orders handle closing
 	return false, ""
 }
