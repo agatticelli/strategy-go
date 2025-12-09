@@ -87,6 +87,47 @@ func (c *Calculator) ValidateStopLoss(side broker.Side, entry, stopLoss float64)
 	return nil
 }
 
+// CalculatePnLPercent calculates PnL percentage for a position
+// Formula:
+//   LONG:  (mark - entry) / entry * 100
+//   SHORT: (entry - mark) / entry * 100
+func (c *Calculator) CalculatePnLPercent(side broker.Side, entryPrice, markPrice float64) float64 {
+	if entryPrice <= 0 {
+		return 0
+	}
+	if side == broker.SideLong {
+		return ((markPrice - entryPrice) / entryPrice) * 100
+	}
+	return ((entryPrice - markPrice) / entryPrice) * 100
+}
+
+// CalculateDistanceToPrice calculates percentage distance from current price to target
+// Formula:
+//   LONG:  (target - current) / current * 100
+//   SHORT: (current - target) / current * 100
+func (c *Calculator) CalculateDistanceToPrice(side broker.Side, currentPrice, targetPrice float64) float64 {
+	if currentPrice <= 0 {
+		return 0
+	}
+	if side == broker.SideLong {
+		return ((targetPrice - currentPrice) / currentPrice) * 100
+	}
+	return ((currentPrice - targetPrice) / currentPrice) * 100
+}
+
+// CalculateExpectedPnL calculates expected PnL for a closing order
+// Returns both nominal (dollar) and percentage values
+func (c *Calculator) CalculateExpectedPnL(side broker.Side, entryPrice, exitPrice, size float64) (nominal float64, percent float64) {
+	if side == broker.SideLong {
+		nominal = (exitPrice - entryPrice) * size
+	} else {
+		nominal = (entryPrice - exitPrice) * size
+	}
+
+	percent = c.CalculatePnLPercent(side, entryPrice, exitPrice)
+	return nominal, percent
+}
+
 // ValidateInputs validates all calculation inputs
 func (c *Calculator) ValidateInputs(side broker.Side, entryPrice, stopLoss, riskPercent, accountEquity float64) error {
 	if entryPrice <= 0 {
