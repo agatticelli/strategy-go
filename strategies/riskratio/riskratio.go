@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gattimassimo/strategy-go"
-	"github.com/gattimassimo/strategy-go/calculator"
-	"github.com/gattimassimo/trading-go/broker"
+	"github.com/agatticelli/strategy-go"
+	"github.com/agatticelli/strategy-go/calculator"
+	"github.com/agatticelli/trading-go/broker"
 )
 
 // RiskRatioStrategy implements fixed risk-reward ratio strategy

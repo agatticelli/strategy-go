@@ -3,7 +3,7 @@ package strategy
 import (
 	"context"
 
-	"github.com/gattimassimo/trading-go/broker"
+	"github.com/agatticelli/trading-go/broker"
 )
 
 // Strategy defines the interface all trading strategies must implement

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/gattimassimo/trading-go/broker"
+	"github.com/agatticelli/trading-go/broker"
 )
 
 // Calculator handles position sizing and risk calculations

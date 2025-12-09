@@ -3,7 +3,7 @@ package strategy
 import (
 	"time"
 
-	"github.com/gattimassimo/trading-go/broker"
+	"github.com/agatticelli/trading-go/broker"
 )
 
 // PositionParams contains input for position calculation
